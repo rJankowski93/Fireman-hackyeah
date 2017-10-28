@@ -1,14 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import EventCreationView from './app/view/EventCreationView';
+
 
 export default class App extends React.Component {
+  
+  
+  
   render() {
+  
+ // UserService.save(1,"name","adrres")
+  
+  
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js thghjhgghjddddo start workdsdsding on your apsdsssp!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+
+    <EventCreationView/>
     );
   }
 }
