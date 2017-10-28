@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, ListView, StyleSheet, Text, Button, FlatList} from 'react-native';
-import OfficersService from '../service/OfficersService';
+import {FlatList, StyleSheet, Text} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,25 +23,34 @@ class OfficersListView extends React.Component {
     constructor(props) {
         super(props);
 
-        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(OfficersService.getOfficers()),
-            test: OfficersService.getOfficers()
+            users: []
         };
 
-        console.log(this.state.test)
     }
 
     notifyOfficer = () => {
         console.log("notifyOfficer works");
     }
 
+    componentDidMount() {
+        fetch('http://192.168.43.91:8080/api/user/all')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    users: responseJson
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     render() {
         return (
             <FlatList
-                data={this.state.test}
-                renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+                data={this.state.users}
+                renderItem={({item}) => <Text style={styles.item}>{item.firstName}</Text>}
             />
         )
     }
