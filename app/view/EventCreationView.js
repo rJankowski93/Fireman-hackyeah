@@ -1,6 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet,Alert, View} from 'react-native';
 import MapView from 'react-native-maps';
+import EventFormComponent from '../component/EventFormComponent'
+import Button from "react-native-button";
 
 const delta = {
     latitudeDelta: 0.0922,
@@ -56,8 +58,10 @@ export default class EventCreationView extends React.Component {
 
     render() {
         return (
-            <View>
-                <MapView
+            <View style={styles.container}>
+            <EventFormComponent/>
+          
+                { <MapView
                     style={styles.map}
                     region={this.state.region}
                     showsMyLocationButton={true}
@@ -74,15 +78,43 @@ export default class EventCreationView extends React.Component {
                         />
                     ))}
 
-                </MapView>
+                </MapView> }
+                <View style={styles.footer}>
+                <Button onPress={() => this.sendEvent()} style={styles.sendButton}>Wyślij</Button>
+                <Button  style={styles.CancelButton}>Anuluj</Button>
+                </View>
             </View>
         );
     }
+
+
+    sendEvent(){
+        //todo send event
+    }
 }
+
+
 
 const styles = StyleSheet.create({
     map: {
-        width: 300,
-        height: 300
-    }
+        flex:0.9
+    },
+    container:{
+        flex:1
+    },
+    footer:{   
+        flexDirection: 'row'
+    },
+    sendButton:{ 
+        justifyContent:"center",   
+        width:200,
+        height:30,
+        backgroundColor:'#ff0000'
+    },
+    CancelButton:{
+      justifyContent:"center",
+        width:200,
+        height:30,
+        backgroundColor:'#00ff00'
+    },
 });
