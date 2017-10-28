@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ListView, StyleSheet, Text, Button} from 'react-native';
+import {View, ListView, StyleSheet, Text, Button, FlatList} from 'react-native';
 import OfficersService from '../service/OfficersService';
 
 const styles = StyleSheet.create({
@@ -11,7 +11,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
         //alignItems: 'center',
-    }
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+    },
 
 });
 
@@ -21,10 +26,11 @@ class OfficersListView extends React.Component {
 
         const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: dataSource.cloneWithRows(['Rafal Jankowski', 'Bartlomiej Golabek', 'Karol Klimonczyk', 'Michal Drak', 'Dominik Kownacki']),
+            dataSource: dataSource.cloneWithRows(OfficersService.getOfficers()),
+            test: OfficersService.getOfficers()
         };
 
-        OfficersService.getOfficers();
+        console.log(this.state.test)
     }
 
     notifyOfficer = () => {
@@ -34,20 +40,11 @@ class OfficersListView extends React.Component {
 
     render() {
         return (
-            <ListView
-                style={styles.container}
-                dataSource={this.state.dataSource}
-                renderRow={(data) =>
-                    <View style={styles.listElement}>
-                        <Text>{data}</Text>
-                        <Button
-                            title={'Delegate'}
-                            onPress={this.notifyOfficer}>
-                        </Button>
-                    </View>
-                }
+            <FlatList
+                data={this.state.test}
+                renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
             />
-        );
+        )
     }
 }
 
