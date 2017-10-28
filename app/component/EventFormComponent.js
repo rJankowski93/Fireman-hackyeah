@@ -12,33 +12,64 @@ export default class EventFormComponent extends React.Component {
         }
     }
 
-  render() {
+  render() {  
+
+this.props.setEvent(this.state.event);
+
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Dodja zgłosznie:</Text>
         <View style={styles.properties}>
         <Text style={styles.label}>Nazwa</Text>
-        <TextInput onChangeText={(event) => this.setState({state:this.state.event.name})}></TextInput>
+        <TextInput onChangeText={this.onNameChanged}></TextInput>
         <Text style={styles.label}  >Kategoria</Text>
-        <Picker onValueChange={(itemValue, itemIndex) => this.setState({state:this.state.event.category})} >
+        <Picker selectedValue={this.state.event.category}
+                onValueChange={this.onCategoryChanged} >
             <Picker.Item label="pożar" value="FIRE" />
             <Picker.Item label="koty" value="CAT" />
             <Picker.Item label="drzewa" value="TREE" />
             <Picker.Item label="wypadki samochodowe" value="ACCIDENT_CAR" />
         </Picker>
         <Text style={styles.label}>Priorytet</Text>
-        <Picker onValueChange={(itemValue, itemIndex) => this.setState({state:this.state.event.priority})} >
+        <Picker onValueChange={this.onPriorityChanged}
+                selectedValue={this.state.event.priority} >
             <Picker.Item label="niski" value="LOW" />
             <Picker.Item label="normalny" value="NORMAL" />
             <Picker.Item label="wysoki" value="HIGH" />
         </Picker>
         <Text style={styles.label} >Opis</Text>
-        <TextInput  onChangeText={(event) => this.setState({state:this.state.event.descryption})}></TextInput>
+        <TextInput  onChangeText={this.onDescryptionChanged}></TextInput>
    </View>
 
-      </View>
+      </View>  
     );
   }
+
+  onNameChanged=(text)=>{
+    let newState = this.state.event;
+    newState.name=text;
+    this.setState({event:newState});
+  }
+
+  onDescryptionChanged=(text)=>{
+    let newState = this.state.event;
+    newState.descryption=text;
+    this.setState({event:newState});
+  }
+
+  onPriorityChanged=(text)=>{
+    let newState = this.state.event;
+    newState.priority=text;
+    this.setState({event:newState});
+  }
+
+  onCategoryChanged=(text)=>{
+    let newState = this.state.event;
+    newState.category=text;
+    this.setState({event:newState});
+  }
+
+
 }
 
 const styles = StyleSheet.create({
