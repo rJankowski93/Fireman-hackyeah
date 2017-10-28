@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, TextInput, CheckBox } from 'react-native';
+import {StyleSheet, Text, View, TextInput } from 'react-native';
 import { Card, Button, Divider } from 'react-native-material-design';
+import CheckBox from 'react-native-checkbox';
 
 export default class ProfileView extends React.Component {
 	constructor(props) {
@@ -59,6 +60,19 @@ export default class ProfileView extends React.Component {
 		});
 	};
 
+	onHolidayChange = () => {
+	const isChecked = !this.state.holiday;
+	let nextState = {
+	    holiday: isChecked
+	}
+	if(isChecked){
+	    nextState.status = STATUS.ON_HOLD;
+	} else if(this.state.status == STATUS.ON_HOLD){
+	    this.setStatus();
+	}
+	this.setState(nextState);
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -91,10 +105,14 @@ export default class ProfileView extends React.Component {
                             </View>
 
                             <Text>{this.state.status}</Text>
-                            <Text>Urlop</Text>
-
+                            <CheckBox
+                                                          label='Urlop'
+                                                          checked={this.state.holiday}
+                                                          onChange={this.onHolidayChange}
+                                                        />
                         </Card.Body>
                     </Card>
+
 			</View>
 		);
 	}
