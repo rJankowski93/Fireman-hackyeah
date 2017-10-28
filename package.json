@@ -22,6 +22,8 @@
     "expo": "^21.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
-    "react-native-maps":"^0.17.1"
+    "react-native-maps": "^0.17.1",
+    "react-native-material-design": "^0.3.7",
+    "react-native-material-ui": "^1.14.0"
   }
 }

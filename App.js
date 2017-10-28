@@ -1,23 +1,73 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
+import { Card, Button } from 'react-native-material-design';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js thghjhgghjddddo start workdsdsding on your apsdsssp!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+export default class ProfileView extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			unit: '-',
+			address: 'none',
+			status: STATUS.NOT_ACTIVE,
+			worktime: {
+				start: '',
+				end: ''
+			}
+		}
+	}
+
+	onStatusChange = (val) => {
+		this.setState({status: val});
+	};
+
+	onAddressChange = (val) => {
+		this.setState({address: val});
+	};
+
+	onStartTimeChange = (val) => {
+		this.setState({
+			worktime: {
+				start: val
+			}
+		});
+	};
+
+	onEndTimeChange = (val) => {
+		this.setState({
+			worktime: {
+				end: val
+			}
+		});
+	};
+
+	render() {
+		return (
+			<View style={styles.container}>
+				<Text>Jednostka OSP: </Text>
+				<TextInput value={this.state.unit}/>
+				<Text>Adres: </Text>
+				<TextInput value={this.state.address}/>
+				<Text>Godziny pracy: </Text>
+				<TextInput value={this.state.address} onChange={this.onStartTimeChange}/>
+				<TextInput value={this.state.address} onChange={this.onEndTimeChange}/>
+				<Text>{this.state.status}</Text>
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+		container: {
+			flex: 1,
+			backgroundColor: '#f5f5f5',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+	});
+
+export const STATUS = {
+		ACTIVE: 'pracuje',
+		NOT_ACTIVE: 'poza godzinami pracy',
+		ON_HOLD: 'urlop'
+	};
