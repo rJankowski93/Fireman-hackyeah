@@ -1,1 +1,0 @@
-// please create views in the same naming convention
