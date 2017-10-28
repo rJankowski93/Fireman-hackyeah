@@ -50,7 +50,11 @@ class OfficersListView extends React.Component {
         return (
             <FlatList
                 data={this.state.users}
-                renderItem={({item}) => <Text style={styles.item}>{item.firstName}</Text>}
+                renderItem={({item}) =>
+                    <Text style={styles.item}>
+                        {item.firstName} {item.lastName}
+                    </Text>
+                }
             />
         )
     }
