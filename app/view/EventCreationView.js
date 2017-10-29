@@ -17,21 +17,21 @@ export default class EventCreationView extends React.Component {
         //set region and markers
         this.state = {
             region: {
-                latitude: 0,
-                longitude: 0,
+                latitude: 50.0676462,
+                longitude: 19.9916288,
                 latitudeDelta: delta.latitudeDelta,
                 longitudeDelta: delta.longitudeDelta
             },
             error: null,
             markers: [
                 {
-                    id: 1,
+                    id: 0,
                     latlng:{
-                        longitude: 0,
-                        latitude: 0
+                        latitude: 50.0676462,
+                        longitude: 19.9916288
                     },
-                    title: 'Foo Place',
-                    description: '1234 Foo Drive'
+                    title: 'Pożar',
+                    description: '0.0, 0.0'
                 }
             ],
             //test:this.props.event,
@@ -51,16 +51,16 @@ export default class EventCreationView extends React.Component {
                         longitudeDelta: delta.longitudeDelta
                     },
                     markers: [
-                                    {
-                                        id: 1,
-                                        latlng:{
-                                            latitude: position.coords.latitude,
-                                            longitude: position.coords.longitude
-                                        },
-                                        title: 'Foo Place',
-                                        description: '1234 Foo Drive'
-                                    }
-                                ],
+                        {
+                         id: 0,
+                        latlng:{
+                             latitude: position.coords.latitude,
+                             longitude: position.coords.longitude
+                         },
+                             title: 'Pożar',
+                             description: Number(position.coords.latitude).toFixed(4)+', '+ Number(position.coords.longitude).toFixed(4)
+                          }
+                       ],
                 });
             },
             (error) => this.setState({error: error.message}),
@@ -70,6 +70,19 @@ export default class EventCreationView extends React.Component {
 
     componentDidUpdate(){
         console.log(this.state.region.latitude,this.state.region.longitude)
+    }
+
+    addMarker(e){
+    let markers = this.state.markers;
+    let marker = {
+                        id: markers.length,
+                        latlng:e.coordinate,
+                        title: 'Pożar',
+                        description:  Number(e.coordinate.latitude).toFixed(4)+', '+Number(e.coordinate.longitude).toFixed(4)
+      }
+      markers.push(marker);
+
+      this.setState(markers);
     }
 
 
@@ -97,6 +110,7 @@ setEvent(newEvent){
                     showsMyLocationButton={true}
                     onRegionChange={ region => this.setState({region}) }
                     onRegionChangeComplete={ region => this.setState({region}) }
+                    onPress={e => this.addMarker(e.nativeEvent)}
                    >
 
                     {this.state.markers.map(marker =>
