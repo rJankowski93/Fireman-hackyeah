@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Alert, View} from 'react-native';
+import {StyleSheet,Alert, View, Keyboard} from 'react-native';
 import MapView from 'react-native-maps';
 import EventFormComponent from '../component/EventFormComponent'
 import Button from "react-native-button";
@@ -22,21 +22,21 @@ export default class EventCreationView extends React.Component {
         //set region and markers
         this.state = {
             region: {
-                latitude: 19.9449799,
-                longitude: 50.0646501,
+                latitude: 50.0676462,
+                longitude: 19.9916288,
                 latitudeDelta: delta.latitudeDelta,
                 longitudeDelta: delta.longitudeDelta
             },
             error: null,
             markers: [
                 {
-                    id: 1,
+                    id: 0,
                     latlng:{
-                        latitude: 19.9449799,
-                        longitude: 50.0646501
+                        latitude: 50.0676462,
+                        longitude: 19.9916288
                     },
-                    title: 'Foo Place',
-                    description: '1234 Foo Drive'
+                    title: 'Pożar',
+                    description: '0.0, 0.0'
                 }
             ],
             //test:this.props.event,
@@ -54,13 +54,52 @@ export default class EventCreationView extends React.Component {
                         longitude: position.coords.longitude,
                         latitudeDelta: delta.latitudeDelta,
                         longitudeDelta: delta.longitudeDelta
-                    }
-                },()=>this.forceUpdate());
-
+                    },
+                    markers: [
+                        {
+                         id: 0,
+                        latlng:{
+                             latitude: position.coords.latitude,
+                             longitude: position.coords.longitude
+                         },
+                             title: 'Pożar',
+                             description: Number(position.coords.latitude).toFixed(4)+', '+ Number(position.coords.longitude).toFixed(4)
+                          }
+                       ],
+                });
             },
             (error) => this.setState({error: error.message}),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
         );
+    }
+
+    componentDidUpdate(){
+        console.log(this.state.region.latitude,this.state.region.longitude)
+    }
+
+    addMarker(e){
+    let markers = this.state.markers;
+    let marker = {
+                        id: markers.length,
+                        latlng:e.coordinate,
+                        title: 'Pożar',
+                        description:  Number(e.coordinate.latitude).toFixed(4)+', '+Number(e.coordinate.longitude).toFixed(4)
+      }
+      markers.push(marker);
+
+      this.setState(markers);
+    }
+    addMarkerFromForm(e){
+    let markers = this.state.markers;
+    let marker = {
+                        id: markers.length,
+                        latlng:{latitude: e.lat,longitude:e.lng},
+                        title: e.category +' | '+ e.name,
+                        description:  Number(e.lat).toFixed(2)+', '+Number(e.lng).toFixed(2)+" | "+e.address+" | "+e.descryption
+      }
+      markers.push(marker);
+
+      this.setState(markers);
     }
 
 
@@ -69,11 +108,11 @@ export default class EventCreationView extends React.Component {
    }
 
     render() {
+    console.log(this.state.markers[0].latlng.latitude, this.state.markers[0].latlng.longitude)
         return (
             <View style={styles.container}>
                 <StatusBarComponent backgroundColor="#B41A16" />
-
-                <EventFormComponent setEvent={this.setEvent}/>
+            <EventFormComponent ref={(el) => { this.eventForm = el; }} {...this.state.markers[0].latlng} setEvent={this.setEvent}/>
           
                 { <MapView
                     style={styles.map}
@@ -81,16 +120,18 @@ export default class EventCreationView extends React.Component {
                     showsMyLocationButton={true}
                     onRegionChange={ region => this.setState({region}) }
                     onRegionChangeComplete={ region => this.setState({region}) }
+                    onLongPress={e => this.addMarker(e.nativeEvent)}
+                    onPress={()=>Keyboard.dismiss()}
                    >
 
-                    {this.state.markers.map(marker => (
+                    {this.state.markers.map(marker =>
                         <MapView.Marker
                             key={marker.id}
                             coordinate={marker.latlng}
                             title={marker.title}
                             description={marker.description}
                         />
-                    ))}
+                    )}
 
                 </MapView> }
                 <View style={styles.footer}>
@@ -105,8 +146,11 @@ export default class EventCreationView extends React.Component {
         registerForPushNotificationsAsync();
       }
 
-    sendEvent(){
-        this._notificationSubscription = this._registerForPushNotifications();
+
+    sendEvent = () => {      
+        this.setState({event: this.eventForm.state.event})
+        this.addMarkerFromForm(this.eventForm.state.event)
+        this._notificationSubscription = this._registerForPushNotifications();        
     }
 }
 
