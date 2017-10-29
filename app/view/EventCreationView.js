@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Alert, View} from 'react-native';
+import {StyleSheet,Alert, View, Keyboard} from 'react-native';
 import MapView from 'react-native-maps';
 import EventFormComponent from '../component/EventFormComponent'
 import Button from "react-native-button";
@@ -84,6 +84,18 @@ export default class EventCreationView extends React.Component {
 
       this.setState(markers);
     }
+    addMarkerFromForm(e){
+    let markers = this.state.markers;
+    let marker = {
+                        id: markers.length,
+                        latlng:{latitude: e.lat,longitude:e.lng},
+                        title: e.category +' | '+ e.name,
+                        description:  Number(e.lat).toFixed(2)+', '+Number(e.lng).toFixed(2)+" | "+e.address+" | "+e.descryption
+      }
+      markers.push(marker);
+
+      this.setState(markers);
+    }
 
 
 setEvent(newEvent){
@@ -102,7 +114,7 @@ setEvent(newEvent){
     console.log(this.state.markers[0].latlng.latitude, this.state.markers[0].latlng.longitude)
         return (
             <View style={styles.container}>
-            <EventFormComponent {...this.state.markers[0].latlng} setEvent={this.setEvent}/>
+            <EventFormComponent ref={(el) => { this.eventForm = el; }} {...this.state.markers[0].latlng} setEvent={this.setEvent}/>
           
                 { <MapView
                     style={styles.map}
@@ -110,7 +122,8 @@ setEvent(newEvent){
                     showsMyLocationButton={true}
                     onRegionChange={ region => this.setState({region}) }
                     onRegionChangeComplete={ region => this.setState({region}) }
-                    onPress={e => this.addMarker(e.nativeEvent)}
+                    onLongPress={e => this.addMarker(e.nativeEvent)}
+                    onPress={()=>Keyboard.dismiss()}
                    >
 
                     {this.state.markers.map(marker =>
@@ -132,9 +145,9 @@ setEvent(newEvent){
     }
 
 
-    sendEvent(){
-        //todo send event
-        console.log("@@@@@@@"+this.state.event.name);
+    sendEvent = () => {
+        this.setState({event: this.eventForm.state.event})
+        this.addMarkerFromForm(this.eventForm.state.event)
     }
 }
 

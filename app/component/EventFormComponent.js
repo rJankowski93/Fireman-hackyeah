@@ -31,6 +31,9 @@ export default class EventFormComponent extends React.Component {
         let coords = this.props.latitude+', '+this.props.longitude;
         this.getReverseGeocode(coords)
         .then((val) => {
+            let e = val;
+            val.lat = this.props.latitude;
+            val.lng = this.props.longitude;
             this.setState({event:val});
         })
         .catch((error) => {
@@ -58,10 +61,7 @@ export default class EventFormComponent extends React.Component {
             }
       this.getGeocode(address)
             .then((val) => {
-                let event = val
-                event.address = address;
-
-              this.setState({event:event});
+              this.setState({event:val});
             })
             .catch((error) => {
               console.error(error);
@@ -73,8 +73,13 @@ export default class EventFormComponent extends React.Component {
       if(this.binding){
         clearTimeout(this.binding)
       }
+      let event = this.state.event;
+      event.address = val;
+      this.setState(event:event)
         let rebound = this.updateAddress.bind(this,val)
-        this.binding = setTimeout(rebound, 2000);
+        if(val){
+         this.binding = setTimeout(rebound, 2000);
+        }
       }
 
   render() {  
@@ -86,7 +91,7 @@ this.props.setEvent(this.state.event);
         <Text style={styles.title}>Dodja zgłosznie:</Text>
         <View style={styles.properties}>
         <Text style={styles.label}>Nazwa</Text>
-        <TextInput onChangeText={this.onNameChanged}></TextInput>
+        <TextInput value={this.state.event.name} onChangeText={this.onNameChanged}></TextInput>
         <Text style={styles.label}  >Kategoria</Text>
         <Picker selectedValue={this.state.event.category}
                 onValueChange={this.onCategoryChanged} >
@@ -103,7 +108,7 @@ this.props.setEvent(this.state.event);
             <Picker.Item label="wysoki" value="HIGH" />
         </Picker>
         <Text style={styles.label} >Opis</Text>
-        <TextInput  onChangeText={this.onDescryptionChanged}></TextInput>
+        <TextInput value={this.state.event.descryption} onChangeText={this.onDescryptionChanged}></TextInput>
         <Text  style={styles.label} >Adres {this.state.event.lat+', '+this.state.event.lng}</Text>
         <TextInput value={this.state.event.address} onChangeText={this.onAddressChange}></TextInput>
    </View>
