@@ -1,6 +1,8 @@
 import React from "react";
 import {StyleSheet, Text, View, Image, Linking, Component, TouchableHighlight} from "react-native";
 import MapView from "react-native-maps";
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 export const CATEGORY = {
     FIRE: 'Fire',
@@ -39,6 +41,10 @@ export default class EventView extends React.Component {
 
     render() {
         return (
+            <View style={styles.container2}>
+                <StatusBarComponent backgroundColor="#B41A16" />
+
+
             <View style={styles.container}>
 
                 <View style={styles.text}>
@@ -69,7 +75,7 @@ export default class EventView extends React.Component {
                     </TouchableHighlight>
                 </View>
             </View>
-
+            </View>
 
         );
     }
@@ -84,6 +90,9 @@ export default class EventView extends React.Component {
 }
 
 var styles = StyleSheet.create({
+    container2: {
+        flex: 1,
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -96,7 +105,8 @@ var styles = StyleSheet.create({
     },
     text: {
         flex: 1,
-        marginTop: 50,
+        marginTop: 20,
+        marginBottom: 10
     },
     map: {
         width: 400,
