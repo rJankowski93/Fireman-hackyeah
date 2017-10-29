@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet, Text, View, TextInput } from 'react-native';
 import { Card, Button, Divider } from 'react-native-material-design';
 import CheckBox from 'react-native-checkbox';
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 export default class ProfileView extends React.Component {
 	constructor(props) {
@@ -106,7 +108,9 @@ export default class ProfileView extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-			<Text style={{fontSize:30, padding: 20}}>Profil</Text>
+				<StatusBarComponent backgroundColor="#B41A16" />
+
+				<Text style={{fontSize:30, padding: 20}}>Profil</Text>
                     <Card>
                         <Card.Body>
                         <View style={styles.card}>

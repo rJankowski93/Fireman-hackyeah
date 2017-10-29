@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {View, Text, FlatList, ActivityIndicator} from "react-native";
 import {List, ListItem, SearchBar} from "react-native-elements";
+import StatusBarComponent from "../component/StatusBarComponent";
 
 export const PRIORITY = {
     HIGH: 'High',
@@ -117,7 +118,10 @@ class EventListView extends Component {
 
     render() {
         return (
+
             <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+                <StatusBarComponent backgroundColor="#B41A16" />
+
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (

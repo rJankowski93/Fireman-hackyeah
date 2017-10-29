@@ -4,6 +4,8 @@ import MapView from 'react-native-maps';
 import EventFormComponent from '../component/EventFormComponent'
 import Button from "react-native-button";
 import EventModel from '../model/EventModel'
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 const delta = {
     latitudeDelta: 0.0922,
@@ -74,7 +76,9 @@ setEvent(newEvent){
     render() {
         return (
             <View style={styles.container}>
-            <EventFormComponent setEvent={this.setEvent}/>
+                <StatusBarComponent backgroundColor="#B41A16" />
+
+                <EventFormComponent setEvent={this.setEvent}/>
           
                 { <MapView
                     style={styles.map}

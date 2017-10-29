@@ -1,5 +1,7 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 const styles = StyleSheet.create({
     container: {
@@ -48,7 +50,11 @@ class OfficersListView extends React.Component {
 
     render() {
         return (
+            <View>
+                <StatusBarComponent backgroundColor="#B41A16" />
+
             <FlatList
+
                 data={this.state.users}
                 renderItem={({item}) =>
                     <Text style={styles.item}>
@@ -56,6 +62,8 @@ class OfficersListView extends React.Component {
                     </Text>
                 }
             />
+            </View>
+
         )
     }
 }

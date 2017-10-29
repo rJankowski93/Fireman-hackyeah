@@ -1,6 +1,8 @@
 import React from "react";
 import {StyleSheet, Text, View, Image, Linking, Component, TouchableHighlight} from "react-native";
 import MapView from "react-native-maps";
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 export const CATEGORY = {
     FIRE: 'Fire',
@@ -40,6 +42,7 @@ export default class EventView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <StatusBarComponent backgroundColor="#B41A16" />
 
                 <View style={styles.text}>
                     <Text>  <Text style={styles.names}>Nazwa: </Text> {event.name} </Text>

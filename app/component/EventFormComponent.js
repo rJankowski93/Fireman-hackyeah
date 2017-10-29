@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Picker } from 'react-native';
 import EventModel from '../model/EventModel'
 
-export default class EventFormComponent extends React.Component {
+export default class EventFormComponent  extends React.Component{
   
 
     constructor(props){
