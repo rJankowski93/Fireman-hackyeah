@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View, Button, ListView} from 'react-native';
+import {FlatList, StyleSheet, Text, View, Button, ListView, Image} from 'react-native';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 const styles = StyleSheet.create({
@@ -11,32 +11,42 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     text: {
         padding: 10,
         fontSize: 18,
         height: 44,
+        alignItems: 'flex-start',
     },
-    button: {},
+    button: {
+        alignItems: 'flex-end',
+    },
     rowFront: {
-        alignItems: 'center',
         flex: 1,
-        padding: 10,
-        backgroundColor: 'blue',
-        borderBottomColor: 'red',
-        borderBottomWidth: 1,
+        padding: 0,
+        backgroundColor: "#CED0CE",
+        borderColor: 'black',
+        borderWidth: 2,
         justifyContent: 'center',
-        //height: 100,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
     },
     rowBack: {
-        alignItems: 'center',
         backgroundColor: '#DDD',
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingLeft: 15,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
     },
+    img: {
+        width: 50,
+        height: 50,
+        marginLeft: 0,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    }
 
 });
 
@@ -76,6 +86,10 @@ class OfficersListView extends React.Component {
                 dataSource={ds.cloneWithRows(this.state.users)}
                 renderRow={user => (
                     <View style={[styles.listElement, styles.rowFront]}>
+                        <Image
+                            style={styles.img}
+                            source={require('../../img/fireman-avatar.png')}
+                        />
                         <Text style={styles.text}>
                             {user.firstName} {user.lastName}
                         </Text>
