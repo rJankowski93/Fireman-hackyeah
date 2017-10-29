@@ -56,7 +56,7 @@ class OfficersListView extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://192.168.43.242:8080/api/user/activeUsers')
+        fetch('http://10.240.101.227:8080/api/user/activeUsers')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -89,6 +89,7 @@ class OfficersListView extends React.Component {
                 renderHiddenRow={user => (
                     <View style={[styles.listElement, styles.rowBack]}>
                         <Text>Left</Text>
+
                         <Text>Right</Text>
                     </View>
                 )}
