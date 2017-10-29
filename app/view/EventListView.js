@@ -36,7 +36,7 @@ class EventListView extends Component {
 
     makeRemoteRequest = () => {
         const {page} = this.state;
-        const url = 'http://10.240.101.227:8080/api/event/page/name?name=' + this.state.text + '&pageNumber=' + page + "&pageSize=" + 10;
+        const url = 'http://10.240.214.145:8080/api/event/page/name?name=' + this.state.text + '&pageNumber=' + page + "&pageSize=" + 10;
         this.setState({loading: true});
         fetch(url)
             .then(res => res.json())
