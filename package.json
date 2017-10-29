@@ -29,9 +29,7 @@
     "firebase":"^4.6.0",
     "react-native-checkbox": "^1.2.0",
     "react-native-material-design": "^0.3.7",
-    "react-native-material-ui": "^1.14.0",
     "react-native-swipe-list-view":"^0.4.5",
     "react-native-elements": "^0.17.0"
-
   }
 }

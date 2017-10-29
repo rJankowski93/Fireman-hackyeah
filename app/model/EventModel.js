@@ -1,12 +1,15 @@
 
 let EventModel = {
      id : 0,
-      name : "name",  
+      name : "",
       category : "FIRE", 
       priority : "HIGH", 
-      descryption : "descryption", 
+      descryption : "",
       createdAt : new Date(),
       updatedAt : new Date(),
+      address: '',
+      lat: '-',
+      lng: '-'
   }
   
   
