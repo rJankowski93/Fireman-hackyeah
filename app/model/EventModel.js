@@ -1,14 +1,13 @@
 
-class EventModel {
-    constructor(id,name,category,priority,descryption) {
-      this.id = id;
-      this.name = name;  
-      this.category = category;
-      this.priority = priority;
-      this.descryption = descryption;
-      this.createdAt = new Date();
-      this.updatedAt = new Date();
-    }
+let EventModel = {
+     id : 0,
+      name : "name",  
+      category : "FIRE", 
+      priority : "HIGH", 
+      descryption : "descryption", 
+      createdAt : new Date(),
+      updatedAt : new Date(),
   }
+  
   
   module.exports = EventModel;

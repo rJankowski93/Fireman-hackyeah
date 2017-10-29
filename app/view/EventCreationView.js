@@ -3,6 +3,9 @@ import {StyleSheet,Alert, View} from 'react-native';
 import MapView from 'react-native-maps';
 import EventFormComponent from '../component/EventFormComponent'
 import Button from "react-native-button";
+import EventModel from '../model/EventModel'
+import StatusBarComponent from "../component/StatusBarComponent";
+
 
 const delta = {
     latitudeDelta: 0.0922,
@@ -11,9 +14,8 @@ const delta = {
 
 export default class EventCreationView extends React.Component {
 
-    constructor() {
-        super();
-
+    constructor(props) {
+        super(props);
         //set region and markers
         this.state = {
             region: {
@@ -33,7 +35,9 @@ export default class EventCreationView extends React.Component {
                     title: 'Foo Place',
                     description: '1234 Foo Drive'
                 }
-            ]
+            ],
+            //test:this.props.event,
+            event: EventModel,
         };
     }
 
@@ -56,10 +60,25 @@ export default class EventCreationView extends React.Component {
         );
     }
 
+
+setEvent(newEvent){
+    //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + newEvent.name);
+     () => {
+        // ... code here
+            this.setState({event:newEvent});
+        }
+
+
+    // this.setState({event:newEvent});
+    // this.forceUpdate();
+}
+
     render() {
         return (
             <View style={styles.container}>
-            <EventFormComponent/>
+                <StatusBarComponent backgroundColor="#B41A16" />
+
+                <EventFormComponent setEvent={this.setEvent}/>
           
                 { <MapView
                     style={styles.map}
@@ -90,6 +109,7 @@ export default class EventCreationView extends React.Component {
 
     sendEvent(){
         //todo send event
+        console.log("@@@@@@@"+this.state.event.name);
     }
 }
 
@@ -115,6 +135,6 @@ const styles = StyleSheet.create({
       justifyContent:"center",
         width:200,
         height:30,
-        backgroundColor:'#00ff00'
+        backgroundColor:'#00ff00',
     },
 });
