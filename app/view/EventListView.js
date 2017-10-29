@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {View, Text, FlatList, ActivityIndicator} from "react-native";
-import {List, ListItem} from "react-native-elements";
+import {List, ListItem, SearchBar} from "react-native-elements";
 
 export const PRIORITY = {
     HIGH: 'High',
@@ -22,20 +22,20 @@ class EventListView extends Component {
         };
     }
 
-    // componentDidMount() {
-    //     this.makeRemoteRequest();
-    // }
+    componentDidMount() {
+        this.makeRemoteRequest();
+    }
 
-    makeRemoteRequest = () => {
-        const {page, seed} = this.state;
-        const url = `http://10.240.101.227:8080/api/event/all`;
+    makeRemoteRequest = (name: string) => {
+        const {page} = this.state;
+        const url = 'http://10.240.101.227:8080/api/event/getPage?name=' + name + '&page=' + page + "&results=" + 10;
         this.setState({loading: true});
 
         fetch(url)
             .then(res => res.json())
             .then(res => {
                 this.setState({
-                    // data: page === 1 ? res.results : [...this.state.data, ...res.results],
+                    data: page === 1 ? res : [...this.state.data, ...res],
                     data: res,
                     error: res.error || null,
                     loading: false,
@@ -84,27 +84,35 @@ class EventListView extends Component {
         );
     };
 
+    searchText = (text: string) => {
+        this.makeRemoteRequest(text);
+    }
+
     renderHeader = () => {
-        {/*return <SearchBar placeholder="Type Here..." lightTheme round />;*/
+        return <SearchBar placeholder="Wpisz nazwe..." lightTheme round
+                          textInputRef="searchText"
+                          onChangeText={this.searchText.bind(this)}/>;
+
+        {/*return <Text></Text>;*/
         }
-        return <Text></Text>;
     };
 
     renderFooter = () => {
-        // if (!this.state.loading) return null;
-        //
-        // return (
-        //     <View
-        //         style={{
-        //   paddingVertical: 20,
-        //   borderTopWidth: 1,
-        //   borderColor: "#CED0CE"
-        // }}
-        //     >
-        //         <ActivityIndicator animating size="large" />
-        //     </View>
-        // );
-        return <View></View>
+        if (!this.state.loading) return null;
+
+        return (
+            <View
+                style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }}
+            >
+                <ActivityIndicator animating size="large"/>
+            </View>
+        );
+        {/*return <View></View>*/
+        }
     };
 
     render() {
@@ -121,6 +129,7 @@ class EventListView extends Component {
                 backgroundColor: item.priority==PRIORITY.HIGH  ? "#D00009" : item.priority==PRIORITY.NORMAL ? "#BBD004" : "#3DD002",
                 width: 30,
                  height: 30,
+
                 borderRadius: 50,
         }}></View>}
               containerStyle={{ borderBottomWidth: 0 }}
@@ -139,7 +148,6 @@ class EventListView extends Component {
         );
     }
 }
-
 
 
 export default EventListView;
