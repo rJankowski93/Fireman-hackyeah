@@ -13,7 +13,7 @@ export default class App extends React.Component {
             <View style={styles.container}>
                 {/*<EventCreationView/>*/}
                 {/*<EventListView/>*/}
-                {/*<EventView/>*/}
+                {/*<EventView />*/}
                 {/*<OfficersListView/>*/}
                 {/*<ProfileView/>*/}
             </View>
