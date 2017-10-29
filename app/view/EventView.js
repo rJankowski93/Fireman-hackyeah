@@ -24,7 +24,7 @@ const event = {
     longitude: '19.020002299999987'
 };
 
-export default class Event extends React.Component {
+export default class EventView extends React.Component {
 
     constructor(props) {
         super(props);
