@@ -17,8 +17,8 @@ export default class EventCreationView extends React.Component {
         //set region and markers
         this.state = {
             region: {
-                latitude: 19.9449799,
-                longitude: 50.0646501,
+                latitude: 0,
+                longitude: 0,
                 latitudeDelta: delta.latitudeDelta,
                 longitudeDelta: delta.longitudeDelta
             },
@@ -27,8 +27,8 @@ export default class EventCreationView extends React.Component {
                 {
                     id: 1,
                     latlng:{
-                        latitude: 19.9449799,
-                        longitude: 50.0646501
+                        longitude: 0,
+                        latitude: 0
                     },
                     title: 'Foo Place',
                     description: '1234 Foo Drive'
@@ -49,13 +49,27 @@ export default class EventCreationView extends React.Component {
                         longitude: position.coords.longitude,
                         latitudeDelta: delta.latitudeDelta,
                         longitudeDelta: delta.longitudeDelta
-                    }
-                },()=>this.forceUpdate());
-
+                    },
+                    markers: [
+                                    {
+                                        id: 1,
+                                        latlng:{
+                                            latitude: position.coords.latitude,
+                                            longitude: position.coords.longitude
+                                        },
+                                        title: 'Foo Place',
+                                        description: '1234 Foo Drive'
+                                    }
+                                ],
+                });
             },
             (error) => this.setState({error: error.message}),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
         );
+    }
+
+    componentDidUpdate(){
+        console.log(this.state.region.latitude,this.state.region.longitude)
     }
 
 
@@ -72,6 +86,7 @@ setEvent(newEvent){
 }
 
     render() {
+    console.log(this.state.markers[0].latlng.latitude, this.state.markers[0].latlng.longitude)
         return (
             <View style={styles.container}>
             <EventFormComponent setEvent={this.setEvent}/>
@@ -84,14 +99,14 @@ setEvent(newEvent){
                     onRegionChangeComplete={ region => this.setState({region}) }
                    >
 
-                    {this.state.markers.map(marker => (
+                    {this.state.markers.map(marker =>
                         <MapView.Marker
                             key={marker.id}
                             coordinate={marker.latlng}
                             title={marker.title}
                             description={marker.description}
                         />
-                    ))}
+                    )}
 
                 </MapView> }
                 <View style={styles.footer}>
