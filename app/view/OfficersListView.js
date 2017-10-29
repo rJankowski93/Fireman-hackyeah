@@ -1,5 +1,6 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, StyleSheet, Text, View, Button, ListView} from 'react-native';
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,12 +10,32 @@ const styles = StyleSheet.create({
     listElement: {
         flex: 1,
         marginTop: 20,
-        //alignItems: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    item: {
+    text: {
         padding: 10,
         fontSize: 18,
         height: 44,
+    },
+    button: {},
+    rowFront: {
+        alignItems: 'center',
+        flex: 1,
+        padding: 10,
+        backgroundColor: 'blue',
+        borderBottomColor: 'red',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        //height: 100,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
     },
 
 });
@@ -30,11 +51,12 @@ class OfficersListView extends React.Component {
     }
 
     notifyOfficer = () => {
+        //Tutaj wysylamy notyfikacje do user
         console.log("notifyOfficer works");
     }
 
     componentDidMount() {
-        fetch('http://192.168.43.91:8080/api/user/all')
+        fetch('http://192.168.43.242:8080/api/user/activeUsers')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -47,14 +69,33 @@ class OfficersListView extends React.Component {
     }
 
     render() {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return (
-            <FlatList
-                data={this.state.users}
-                renderItem={({item}) =>
-                    <Text style={styles.item}>
-                        {item.firstName} {item.lastName}
-                    </Text>
-                }
+
+            <SwipeListView
+                dataSource={ds.cloneWithRows(this.state.users)}
+                renderRow={user => (
+                    <View style={[styles.listElement, styles.rowFront]}>
+                        <Text style={styles.text}>
+                            {user.firstName} {user.lastName}
+                        </Text>
+                        <Button
+                            style={styles.button}
+                            title={'Delegate'}
+                            onPress={this.notifyOfficer}>
+                        </Button>
+                    </View>
+                )}
+                renderHiddenRow={user => (
+                    <View style={[styles.listElement, styles.rowBack]}>
+                        <Text>Left</Text>
+                        <Text>Right</Text>
+                    </View>
+                )}
+                leftOpenValue={75}
+                rightOpenValue={-75}
+                disableRightSwipe={false}
+                disableLeftSwipe={false}
             />
         )
     }

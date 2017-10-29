@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import EventCreationView from './app/view/EventCreationView';
+import OfficersListView from "./app/view/OfficersListView";
 
 
 export default class App extends React.Component {
@@ -14,7 +15,7 @@ export default class App extends React.Component {
   
     return (
 
-    <EventCreationView/>
+    <OfficersListView/>
     );
   }
 }
