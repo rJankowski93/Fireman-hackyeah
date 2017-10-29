@@ -5,6 +5,9 @@ import EventFormComponent from '../component/EventFormComponent'
 import Button from "react-native-button";
 import EventModel from '../model/EventModel'
 import StatusBarComponent from "../component/StatusBarComponent";
+import * as firebase from 'firebase';
+import { Notifications } from 'expo';
+import registerForPushNotificationsAsync from '../registerForPushNotificationsAsync'
 
 
 const delta = {
@@ -61,17 +64,9 @@ export default class EventCreationView extends React.Component {
     }
 
 
-setEvent(newEvent){
-    //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + newEvent.name);
-     () => {
-        // ... code here
-            this.setState({event:newEvent});
-        }
-
-
-    // this.setState({event:newEvent});
-    // this.forceUpdate();
-}
+    setEvent(newEvent){
+        () => { this.setState({event:newEvent}); }
+   }
 
     render() {
         return (
@@ -106,10 +101,12 @@ setEvent(newEvent){
         );
     }
 
+    _registerForPushNotifications() {
+        registerForPushNotificationsAsync();
+      }
 
     sendEvent(){
-        //todo send event
-        console.log("@@@@@@@"+this.state.event.name);
+        this._notificationSubscription = this._registerForPushNotifications();
     }
 }
 
@@ -129,12 +126,12 @@ const styles = StyleSheet.create({
         justifyContent:"center",   
         width:200,
         height:30,
-        backgroundColor:'#ff0000'
+        backgroundColor:'#00ff00'
     },
     CancelButton:{
       justifyContent:"center",
         width:200,
         height:30,
-        backgroundColor:'#00ff00',
+        backgroundColor:'#ff0000',
     },
 });
