@@ -37,10 +37,17 @@ export default class EventView extends React.Component {
         this.setState({ pressStatus: true });
     }
 
+    static navigationOptions = {
+        tabBarLabel: 'EventView'
+    };
+
     render() {
         return (
             <View style={styles.container}>
-
+                <Button
+                    onPress={() => this.props.navigation.goBack()}
+                    title="Go back home"
+                />
                 <View style={styles.text}>
                     <Text>  <Text style={styles.names}>Nazwa: </Text> {event.name} </Text>
                     <Text>  <Text style={styles.names}>Opis: </Text> {event.description} </Text>
