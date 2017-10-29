@@ -1,0 +1,42 @@
+{
+    "project_info": {
+      "project_number": "111852834816",
+      "firebase_url": "https://hackyeach.firebaseio.com",
+      "project_id": "hackyeach",
+      "storage_bucket": "hackyeach.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:111852834816:android:68c894bd5f2b74b8",
+          "android_client_info": {
+            "package_name": "com.hackyeah"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "111852834816-150m7tuuunp4j40me5m4pn935eq09lj2.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDfqc30MEZq1a5_lMD6FWxLt7eSl540MdY"
+          }
+        ],
+        "services": {
+          "analytics_service": {
+            "status": 1
+          },
+          "appinvite_service": {
+            "status": 1,
+            "other_platform_oauth_client": []
+          },
+          "ads_service": {
+            "status": 2
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
