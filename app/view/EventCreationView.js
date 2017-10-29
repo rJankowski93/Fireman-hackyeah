@@ -1,13 +1,10 @@
-import React from 'react';
-import {StyleSheet,Alert, View, Keyboard} from 'react-native';
-import MapView from 'react-native-maps';
-import EventFormComponent from '../component/EventFormComponent'
-import Button from "react-native-button";
-import EventModel from '../model/EventModel'
+import React from "react";
+import {StyleSheet, Alert, View, Keyboard, ScrollView, TouchableHighlight, Text} from "react-native";
+import MapView from "react-native-maps";
+import EventFormComponent from "../component/EventFormComponent";
+import EventModel from "../model/EventModel";
 import StatusBarComponent from "../component/StatusBarComponent";
-import * as firebase from 'firebase';
-import { Notifications } from 'expo';
-import registerForPushNotificationsAsync from '../registerForPushNotificationsAsync'
+import registerForPushNotificationsAsync from "../registerForPushNotificationsAsync";
 
 
 const delta = {
@@ -31,7 +28,7 @@ export default class EventCreationView extends React.Component {
             markers: [
                 {
                     id: 0,
-                    latlng:{
+                    latlng: {
                         latitude: 50.0676462,
                         longitude: 19.9916288
                     },
@@ -57,15 +54,15 @@ export default class EventCreationView extends React.Component {
                     },
                     markers: [
                         {
-                         id: 0,
-                        latlng:{
-                             latitude: position.coords.latitude,
-                             longitude: position.coords.longitude
-                         },
-                             title: 'Pożar',
-                             description: Number(position.coords.latitude).toFixed(4)+', '+ Number(position.coords.longitude).toFixed(4)
-                          }
-                       ],
+                            id: 0,
+                            latlng: {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            },
+                            title: 'Pożar',
+                            description: Number(position.coords.latitude).toFixed(4) + ', ' + Number(position.coords.longitude).toFixed(4)
+                        }
+                    ],
                 });
             },
             (error) => this.setState({error: error.message}),
@@ -73,109 +70,140 @@ export default class EventCreationView extends React.Component {
         );
     }
 
-    componentDidUpdate(){
-        console.log(this.state.region.latitude,this.state.region.longitude)
+    componentDidUpdate() {
+        console.log(this.state.region.latitude, this.state.region.longitude)
     }
 
-    addMarker(e){
-    let markers = this.state.markers;
-    let marker = {
-                        id: markers.length,
-                        latlng:e.coordinate,
-                        title: 'Pożar',
-                        description:  Number(e.coordinate.latitude).toFixed(4)+', '+Number(e.coordinate.longitude).toFixed(4)
-      }
-      markers.push(marker);
+    addMarker(e) {
+        let markers = this.state.markers;
+        let marker = {
+            id: markers.length,
+            latlng: e.coordinate,
+            title: 'Pożar',
+            description: Number(e.coordinate.latitude).toFixed(4) + ', ' + Number(e.coordinate.longitude).toFixed(4)
+        }
+        markers.push(marker);
 
-      this.setState(markers);
-    }
-    addMarkerFromForm(e){
-    let markers = this.state.markers;
-    let marker = {
-                        id: markers.length,
-                        latlng:{latitude: e.lat,longitude:e.lng},
-                        title: e.category +' | '+ e.name,
-                        description:  Number(e.lat).toFixed(2)+', '+Number(e.lng).toFixed(2)+" | "+e.address+" | "+e.descryption
-      }
-      markers.push(marker);
-
-      this.setState(markers);
+        this.setState(markers);
     }
 
+    addMarkerFromForm(e) {
+        let markers = this.state.markers;
+        let marker = {
+            id: markers.length,
+            latlng: {latitude: e.lat, longitude: e.lng},
+            title: e.category + ' | ' + e.name,
+            description: Number(e.lat).toFixed(2) + ', ' + Number(e.lng).toFixed(2) + " | " + e.address + " | " + e.descryption
+        }
+        markers.push(marker);
 
-    setEvent(newEvent){
-        () => { this.setState({event:newEvent}); }
-   }
+        this.setState(markers);
+    }
+
+
+    setEvent(newEvent) {
+        () => {
+            this.setState({event: newEvent});
+        }
+    }
 
     render() {
-    console.log(this.state.markers[0].latlng.latitude, this.state.markers[0].latlng.longitude)
         return (
-            <View style={styles.container}>
-                <StatusBarComponent backgroundColor="#B41A16" />
-            <EventFormComponent ref={(el) => { this.eventForm = el; }} {...this.state.markers[0].latlng} setEvent={this.setEvent}/>
-          
-                { <MapView
-                    style={styles.map}
-                    region={this.state.region}
-                    showsMyLocationButton={true}
-                    onRegionChange={ region => this.setState({region}) }
-                    onRegionChangeComplete={ region => this.setState({region}) }
-                    onLongPress={e => this.addMarker(e.nativeEvent)}
-                    onPress={()=>Keyboard.dismiss()}
-                   >
+            <ScrollView>
+                <View style={styles.container}>
+                    <StatusBarComponent backgroundColor="#B41A16"/>
+                    <EventFormComponent ref={(el) => { this.eventForm = el; }} {...this.state.markers[0].latlng}
+                                        setEvent={this.setEvent}/>
 
-                    {this.state.markers.map(marker =>
-                        <MapView.Marker
-                            key={marker.id}
-                            coordinate={marker.latlng}
-                            title={marker.title}
-                            description={marker.description}
-                        />
-                    )}
+                    { <MapView
+                        style={styles.map}
+                        region={this.state.region}
+                        showsMyLocationButton={true}
+                        onRegionChange={ region => this.setState({region}) }
+                        onRegionChangeComplete={ region => this.setState({region}) }
+                        onLongPress={e => this.addMarker(e.nativeEvent)}
+                        onPress={()=>Keyboard.dismiss()}
+                    >
 
-                </MapView> }
-                <View style={styles.footer}>
-                <Button onPress={() => this.sendEvent()} style={styles.sendButton}>Wyślij</Button>
-                <Button  style={styles.CancelButton}>Anuluj</Button>
+                        {this.state.markers.map(marker =>
+                            <MapView.Marker
+                                key={marker.id}
+                                coordinate={marker.latlng}
+                                title={marker.title}
+                                description={marker.description}
+                            />
+                        )}
+
+                    </MapView> }
+                    <View style={styles.footer}>
+                        <TouchableHighlight onPress={() => this.sendEvent()} style={styles.buttonAccept}>
+                            <Text style={styles.buttonAcceptText}>Wyślij</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight onPress={() => this.sendEvent()} style={styles.buttonReject}>
+                            <Text style={styles.buttonRejectText}>Anuluj</Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
     _registerForPushNotifications() {
         registerForPushNotificationsAsync();
-      }
+    }
 
 
-    sendEvent = () => {      
+    sendEvent = () => {
         this.setState({event: this.eventForm.state.event})
         this.addMarkerFromForm(this.eventForm.state.event)
-        this._notificationSubscription = this._registerForPushNotifications();        
+        this._notificationSubscription = this._registerForPushNotifications();
     }
 }
 
 
-
 const styles = StyleSheet.create({
     map: {
-        flex:0.9
+        marginTop: 80,
+        height: 200,
     },
-    container:{
-        flex:1
+    container: {
+        flex: 1
     },
-    footer:{   
-        flexDirection: 'row'
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flex: 1,
     },
-    sendButton:{ 
-        justifyContent:"center",   
-        width:200,
-        height:30,
-        backgroundColor:'#00ff00'
+    buttonAccept: {
+        width: 100,
+        height: 50,
+        marginRight:40,
+        marginLeft:40,
+        marginTop:10,
+        paddingTop:15,
+        backgroundColor:'#88ff80',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#000000'
     },
-    CancelButton:{
-      justifyContent:"center",
-        width:200,
-        height:30,
-        backgroundColor:'#ff0000',
+    buttonAcceptText: {
+        color:'#000000',
+        textAlign:'center',
+    },
+    buttonReject: {
+        width: 100,
+        height: 50,
+        marginRight:40,
+        // marginLeft:40,
+        marginTop:10,
+        paddingTop:15,
+        backgroundColor:'#ff2f3e',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#000000'
+    },
+    buttonRejectText: {
+        color:'#000000',
+        textAlign:'center',
     },
 });
