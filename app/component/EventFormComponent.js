@@ -12,6 +12,71 @@ export default class EventFormComponent extends React.Component {
         }
     }
 
+    getGeocode = (address) => {
+        return fetch('https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyBpJtcjgHE_YccUpuTNgQg--1MTo80DB1Q')
+          .then((response) => response.json())
+          .then((responseJson) => {
+          //console.log(responseJson.results[0])
+              let event = this.state.event;
+              event.lat = responseJson.results[0].geometry.location.lat;
+              event.lng = responseJson.results[0].geometry.location.lng;
+              return event;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      componentWillMount = () => {
+        let coords = this.props.latitude+', '+this.props.longitude;
+        this.getReverseGeocode(coords)
+        .then((val) => {
+            this.setState({event:val});
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+
+      getReverseGeocode = (coords) => {
+        return fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng='+coords+'&key=AIzaSyBpJtcjgHE_YccUpuTNgQg--1MTo80DB1Q')
+          .then((response) => response.json())
+          .then((responseJson) => {
+          console.log(responseJson.results[0])
+              let event = this.state.event;
+              event.address = responseJson.results[0].formatted_address;
+              return event;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      updateAddress = (address) => {
+      if(this.binding){
+              clearTimeout(this.binding)
+            }
+      this.getGeocode(address)
+            .then((val) => {
+                let event = val
+                event.address = address;
+
+              this.setState({event:event});
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+      }
+
+      onAddressChange = (val) => {
+      if(this.binding){
+        clearTimeout(this.binding)
+      }
+        let rebound = this.updateAddress.bind(this,val)
+        this.binding = setTimeout(rebound, 2000);
+      }
+
   render() {  
 
 this.props.setEvent(this.state.event);
@@ -39,6 +104,8 @@ this.props.setEvent(this.state.event);
         </Picker>
         <Text style={styles.label} >Opis</Text>
         <TextInput  onChangeText={this.onDescryptionChanged}></TextInput>
+        <Text  style={styles.label} >Adres {this.state.event.lat+', '+this.state.event.lng}</Text>
+        <TextInput value={this.state.event.address} onChangeText={this.onAddressChange}></TextInput>
    </View>
 
       </View>  

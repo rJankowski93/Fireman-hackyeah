@@ -7,6 +7,9 @@ let EventModel = {
       descryption : "descryption", 
       createdAt : new Date(),
       updatedAt : new Date(),
+      address: '',
+      lat: '-',
+      lng: '-'
   }
   
   

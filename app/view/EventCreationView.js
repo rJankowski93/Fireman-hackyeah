@@ -102,7 +102,7 @@ setEvent(newEvent){
     console.log(this.state.markers[0].latlng.latitude, this.state.markers[0].latlng.longitude)
         return (
             <View style={styles.container}>
-            <EventFormComponent setEvent={this.setEvent}/>
+            <EventFormComponent {...this.state.markers[0].latlng} setEvent={this.setEvent}/>
           
                 { <MapView
                     style={styles.map}
